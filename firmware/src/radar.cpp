@@ -93,11 +93,8 @@ void poll_positions(float home_lat, float home_lon, uint16_t range_km) {
             a.callsign[i] = '\0';
 
         JsonVariantConst alt = ac["alt_baro"];
-        if (alt.is<const char*>()) {           // "ground"
-            a.on_ground = true;
-        } else {
-            a.alt_ft = alt | 0;
-        }
+        if (alt.is<const char*>()) continue;   // skip "ground" aircraft
+        a.alt_ft = alt | 0;
         a.gs_kt     = (int16_t)lroundf(ac["gs"] | 0.0f);
         a.track_deg = (int16_t)lroundf(ac["track"] | 0.0f);
         a.baro_rate = (int16_t)constrain((int)(ac["baro_rate"] | 0), -32000, 32000);

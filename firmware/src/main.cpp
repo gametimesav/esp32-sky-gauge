@@ -14,6 +14,10 @@
 #include "homeassistant.h"
 #include "net_lock.h"
 
+#if !defined(CONFIG_IDF_TARGET_ESP32S3)
+#error "This firmware must be built for ESP32-S3 (set the PlatformIO environment to esp32-s3)."
+#endif
+
 namespace {
 
 constexpr uint32_t WIFI_TIMEOUT_MS = 20000;

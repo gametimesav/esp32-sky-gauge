@@ -560,6 +560,14 @@ const char* wind_compass(int deg) {
     return dirs[((deg % 360) + 382) / 45 % 8];   // +22 rounding, normalized
 }
 
+float c_to_f(float c) {
+    return c * 9.0f / 5.0f + 32.0f;
+}
+
+float kmh_to_mph(float kmh) {
+    return kmh * 0.621371f;
+}
+
 // primitive helpers (positions are local to the icon group)
 lv_obj_t* wx_circle(lv_obj_t* p, int d, int x, int y, lv_color_t c) {
     lv_obj_t* o = lv_obj_create(p);
@@ -765,15 +773,16 @@ void weather_timer_cb(lv_timer_t*) {
     }
 
     char buf[48];
-    snprintf(buf, sizeof(buf), "%.0f°", w.temp_c);
+    snprintf(buf, sizeof(buf), "%.0f°F", c_to_f(w.temp_c));
     set_text_if_changed(wx_temp, buf);
     set_text_if_changed(wx_desc, w.desc);
 
-    snprintf(buf, sizeof(buf), "feels %.0f°  •  %u%%", w.feels_c, w.humidity);
+    snprintf(buf, sizeof(buf), "feels %.0f°F  •  %u%%",
+             c_to_f(w.feels_c), w.humidity);
     set_text_if_changed(wx_line1, buf);
 
-    snprintf(buf, sizeof(buf), "wind %.0f km/h %s",
-             w.wind_kmh, wind_compass(w.wind_dir_deg));
+    snprintf(buf, sizeof(buf), "wind %.0f mph %s",
+             kmh_to_mph(w.wind_kmh), wind_compass(w.wind_dir_deg));
     set_text_if_changed(wx_line2, buf);
 
     // Rain nowcast graph — only shown when rain is actually coming.

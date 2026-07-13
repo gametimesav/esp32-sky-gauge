@@ -86,6 +86,11 @@ pio run                       # compile
 pio run -t upload             # flash the firmware (USB)
 pio run -t uploadfs           # upload the web UI (LittleFS image from data/)
 
+# Explicit ESP32-S3 env (equivalent to the default env):
+pio run -e esp32-s3
+pio run -e esp32-s3 -t upload
+pio run -e esp32-s3 -t uploadfs
+
 # Over WiFi (ArduinoOTA, port 3232) — no cable needed once deployed:
 pio run -e ota -t upload      # firmware OTA (screen shows progress %)
 pio run -e ota -t uploadfs    # web UI OTA
